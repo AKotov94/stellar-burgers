@@ -41,7 +41,27 @@ const ingredientsSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message ?? 'Не удалось загрузить данные';
       });
+  },
+  selectors: {
+    selectIngredients: (state) => state.ingredients,
+    selectIsLoading: (state) => state.isLoading,
+    selectError: (state) => state.error
   }
 });
+
+export const { selectIngredients, selectIsLoading, selectError } =
+  ingredientsSlice.selectors;
+
+export const selectBuns = createSelector([selectIngredients], (items) =>
+  items.filter((i) => i.type === 'bun')
+);
+
+export const selectMains = createSelector([selectIngredients], (items) =>
+  items.filter((i) => i.type === 'main')
+);
+
+export const selectSauces = createSelector([selectIngredients], (items) =>
+  items.filter((i) => i.type === 'sauce')
+);
 
 export default ingredientsSlice;

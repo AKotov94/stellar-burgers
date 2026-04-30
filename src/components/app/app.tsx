@@ -25,7 +25,7 @@ import {
   selectIngredients,
   selectIsLoading,
   selectError
-} from '@selectors/selectors';
+} from '@slices/ingredients';
 
 const App = () => {
   /** TODO: взять переменные из стора */

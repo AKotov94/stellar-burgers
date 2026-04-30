@@ -5,7 +5,7 @@ import { useSelector } from '@store';
 import {
   selectConstructorBun,
   selectConstructorIngredients
-} from '@selectors/selectors';
+} from '@slices/constructor';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -13,9 +13,6 @@ export const BurgerConstructor: FC = () => {
     bun: useSelector(selectConstructorBun),
     ingredients: useSelector(selectConstructorIngredients)
   };
-
-  if (!constructorItems || !Array.isArray(constructorItems.ingredients))
-    return <Preloader />;
 
   const orderRequest = false;
 
