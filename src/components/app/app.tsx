@@ -5,6 +5,7 @@ import {
   Login,
   NotFound404,
   Profile,
+  ProfileLayout,
   ProfileOrders,
   Register,
   ResetPassword
@@ -72,7 +73,8 @@ const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
-          <Route path='/profile' element={<Profile />}>
+          <Route path='/profile' element={<ProfileLayout />}>
+            <Route index element={<Profile />} />
             <Route path='orders' element={<ProfileOrders />} />
           </Route>
         </Route>
