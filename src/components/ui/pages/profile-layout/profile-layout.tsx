@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ProfileMenu } from 'src/components/profile-menu';
+import { ProfileMenu } from '@components';
 import commonStyles from '../common.module.css';
 import styles from './profile-layout.module.css';
 

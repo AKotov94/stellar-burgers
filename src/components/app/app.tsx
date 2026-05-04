@@ -24,15 +24,15 @@ import { useEffect } from 'react';
 import { fetchIngredients } from '@slices/ingredients';
 import {
   selectIngredients,
-  selectIsLoading,
-  selectError
+  selectIngredientsIsLoading,
+  selectIngredientsError
 } from '@slices/ingredients';
 
 const App = () => {
   /** TODO: взять переменные из стора */
   const ingredients = useSelector(selectIngredients);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIngredientsIsLoading);
+  const error = useSelector(selectIngredientsError);
 
   const dispatch = useDispatch();
 
@@ -65,7 +65,7 @@ const App = () => {
                 Нет игредиентов
               </div>
             )
-          }
+          } 
         />
         <Route path='/feed' element={<Feed />} />
         <Route element={<ProtectedRoute />}>

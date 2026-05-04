@@ -44,13 +44,16 @@ const ingredientsSlice = createSlice({
   },
   selectors: {
     selectIngredients: (state) => state.ingredients,
-    selectIsLoading: (state) => state.isLoading,
-    selectError: (state) => state.error
+    selectIngredientsIsLoading: (state) => state.isLoading,
+    selectIngredientsError: (state) => state.error
   }
 });
 
-export const { selectIngredients, selectIsLoading, selectError } =
-  ingredientsSlice.selectors;
+export const {
+  selectIngredients,
+  selectIngredientsIsLoading,
+  selectIngredientsError
+} = ingredientsSlice.selectors;
 
 export const selectBuns = createSelector([selectIngredients], (items) =>
   items.filter((i) => i.type === 'bun')
