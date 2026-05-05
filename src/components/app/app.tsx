@@ -65,18 +65,21 @@ const App = () => {
                 Нет игредиентов
               </div>
             )
-          } 
+          }
         />
         <Route path='/feed' element={<Feed />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/profile' element={<ProfileLayout />}>
             <Route index element={<Profile />} />
             <Route path='orders' element={<ProfileOrders />} />
           </Route>
+        </Route>
+
+        <Route element={<ProtectedRoute onlyUnAuth />}>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
         </Route>
         <Route path='*' element={<NotFound404 />} />
       </Routes>

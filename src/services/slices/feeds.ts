@@ -7,13 +7,13 @@ import {
 import { TOrdersData } from '@utils-types';
 
 interface FeedsState {
-  feeds: TOrdersData;
+  feeds: TOrdersData | null;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: FeedsState = {
-  feeds: { orders: [], total: 0, totalToday: 0 },
+  feeds: null,
   isLoading: false,
   error: null
 };
@@ -54,12 +54,12 @@ export const { selectFeeds, selectFeedsIsLoading, selectFeedsError } =
 
 export const selectOrders = createSelector(
   [selectFeeds],
-  (feeds) => feeds.orders
+  (feeds) => feeds?.orders ?? []
 );
 
 export const selectFeedStats = createSelector([selectFeeds], (slice) => ({
-  total: slice.total,
-  totalToday: slice.totalToday
+  total: slice?.total,
+  totalToday: slice?.totalToday
 }));
 
 export default feedsSlice;
