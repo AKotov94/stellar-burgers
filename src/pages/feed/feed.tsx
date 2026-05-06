@@ -1,4 +1,4 @@
-import { fetchFeeds, selectOrders } from '@slices/feeds';
+import { fetchFeeds, selectFeedsData } from '@slices/feeds';
 import { useDispatch, useSelector } from '@store';
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
@@ -7,7 +7,7 @@ import { FC, useEffect } from 'react';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
-  const orders: TOrder[] = useSelector(selectOrders);
+  const orders: TOrder[] = useSelector(selectFeedsData);
 
   const dispatch = useDispatch();
 

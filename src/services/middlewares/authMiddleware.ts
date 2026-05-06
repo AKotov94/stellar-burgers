@@ -1,7 +1,7 @@
+import { deleteCookie, setCookie } from '@cookie';
 import { Middleware } from '@reduxjs/toolkit';
 import { checkUserAuth, loginUser, logOut, registerUser } from '@slices/user';
 import { RootState } from '@store';
-import { deleteCookie, setCookie } from 'src/utils/cookie';
 
 export const authMiddleware: Middleware<{}, RootState> =
   (store) => (next) => (action) => {
@@ -13,17 +13,17 @@ export const authMiddleware: Middleware<{}, RootState> =
     ) {
       const { accessToken, refreshToken } = action.payload;
       setCookie('accessToken', accessToken);
-      setCookie('refreshToken', refreshToken);
+      localStorage.setItem('refreshToken', refreshToken);
     }
 
     if (logOut.fulfilled.match(action)) {
       deleteCookie('accessToken');
-      deleteCookie('refreshToken');
+      localStorage.removeItem('refreshToken');
     }
 
     if (checkUserAuth.rejected.match(action)) {
       deleteCookie('accessToken');
-      deleteCookie('refreshToken');
+      localStorage.removeItem('refreshToken');
     }
 
     return result;

@@ -2,6 +2,7 @@ const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -58,7 +59,6 @@ module.exports = {
   ],
   resolve: {
     extensions: [
-      '*',
       '.js',
       '.jsx',
       '.ts',
@@ -71,16 +71,18 @@ module.exports = {
       '.jpg'
     ],
     alias: {
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@ui': path.resolve(__dirname, './src/components/ui'),
-      '@ui-pages': path.resolve(__dirname, './src/components/ui/pages'),
-      '@utils-types': path.resolve(__dirname, './src/utils/types'),
-      '@api': path.resolve(__dirname, './src/utils/burger-api.ts'),
-      '@slices': path.resolve(__dirname, './src/services/slices'),
-      '@selectors': path.resolve(__dirname, './src/services/selectors'),
-      '@store': path.resolve(__dirname, './src/services/store'),
-    }
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@ui': path.resolve(__dirname, 'src/components/ui'),
+      '@ui-pages': path.resolve(__dirname, 'src/components/ui/pages'),
+      '@utils-types': path.resolve(__dirname, 'src/utils/types'),
+      '@api': path.resolve(__dirname, 'src/utils/burger-api.ts'),
+      '@slices': path.resolve(__dirname, 'src/services/slices'),
+      '@selectors': path.resolve(__dirname, 'src/services/selectors'),
+      '@store': path.resolve(__dirname, 'src/services/store'),
+      '@cookie': path.resolve(__dirname, 'src/utils/cookie')
+    },
+    plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })]
   },
   output: {
     path: path.resolve(__dirname, './dist'),

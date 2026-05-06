@@ -9,14 +9,15 @@ import {
   TRegisterData,
   updateUserApi
 } from '@api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice
+} from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { getCookie } from 'src/utils/cookie';
 
 interface UserState {
   isAuthChecked: boolean;
-  refreshToken: string | null;
-  accessToken: string | null;
   user: TUser | null;
   isLoading: boolean;
   error: string | null;
@@ -24,8 +25,6 @@ interface UserState {
 
 const initialState: UserState = {
   isAuthChecked: false,
-  refreshToken: null,
-  accessToken: null,
   user: null,
   isLoading: false,
   error: null
@@ -54,7 +53,7 @@ export const resetPassword = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   'user/update',
-  async (data: Partial<TUser>) => updateUserApi(data)
+  async (data: Partial<TRegisterData>) => updateUserApi(data)
 );
 
 export const logOut = createAsyncThunk(
@@ -63,7 +62,8 @@ export const logOut = createAsyncThunk(
 );
 
 export const checkUserAuth = createAsyncThunk('user/checkAuth', async () => {
-  if (!getCookie('refreshToken')) {
+  const refreshToken = localStorage.getItem('refreshToken');
+  if (!refreshToken) {
     return Promise.reject('Нет refresh token');
   }
 
@@ -84,8 +84,7 @@ const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
+        state.isAuthChecked = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -100,8 +99,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
+        state.isAuthChecked = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -153,8 +151,6 @@ const userSlice = createSlice({
       .addCase(logOut.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
-        state.accessToken = null;
-        state.refreshToken = null;
         state.isAuthChecked = true;
       })
       .addCase(logOut.rejected, (state, action) => {
@@ -175,9 +171,31 @@ const userSlice = createSlice({
       .addCase(checkUserAuth.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
-        state.accessToken = null;
-        state.refreshToken = null;
         state.isAuthChecked = true;
       });
+  },
+  selectors: {
+    selectUserisAuthChecked: (state) => state.isAuthChecked,
+    selectUser: (state) => state.user,
+    selectUserIsLoading: (state) => state.isLoading,
+    selectUserError: (state) => state.error
   }
 });
+
+export const {
+  selectUserisAuthChecked,
+  selectUser,
+  selectUserIsLoading,
+  selectUserError
+} = userSlice.selectors;
+
+export const selectUserData = createSelector(
+  [selectUser, selectUserIsLoading, selectUserError],
+  (user, isLoading, error) => ({
+    user,
+    isLoading,
+    error
+  })
+);
+
+export default userSlice;

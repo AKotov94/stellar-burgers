@@ -1,5 +1,4 @@
-import { configureStore, combineSlices } from '@reduxjs/toolkit';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
 import {
   TypedUseSelectorHook,
@@ -7,18 +6,25 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 
-import ingredientsSlice from '@slices/ingredients';
 import constructorSlice from '@slices/constructor';
 import feedsSlice from '@slices/feeds';
+import ingredientsSlice from '@slices/ingredients';
+import userSlice from '@slices/user';
+import { authMiddleware } from './middlewares/authMiddleware';
+import ordersSlice from '@slices/orders';
 
 const rootReducer = combineSlices(
   ingredientsSlice,
   constructorSlice,
-  feedsSlice
+  feedsSlice,
+  userSlice,
+  ordersSlice
 ); // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(authMiddleware),
   devTools: process.env.NODE_ENV !== 'production'
 });
 

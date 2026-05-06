@@ -17,27 +17,33 @@ import styles from './app.module.css';
 import { AppHeader } from '@components';
 import { Preloader } from '@ui';
 
-import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from '../protected-route/ProtectedRoute';
-import { useSelector, useDispatch } from '@store';
-import { useEffect } from 'react';
-import { fetchIngredients } from '@slices/ingredients';
 import {
+  fetchIngredients,
   selectIngredients,
-  selectIngredientsIsLoading,
-  selectIngredientsError
+  selectIngredientsError,
+  selectIngredientsIsLoading
 } from '@slices/ingredients';
+import { checkUserAuth, selectUserisAuthChecked } from '@slices/user';
+import { useDispatch, useSelector } from '@store';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import ProtectedRoute from '../protected-route/ProtectedRoute';
 
 const App = () => {
   /** TODO: взять переменные из стора */
   const ingredients = useSelector(selectIngredients);
-  const isLoading = useSelector(selectIngredientsIsLoading);
+  const isAuthChecked = useSelector(selectUserisAuthChecked);
+
+  const ingredientsIsLoading = useSelector(selectIngredientsIsLoading);
+
+  const isLoading = ingredientsIsLoading;
   const error = useSelector(selectIngredientsError);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    if (ingredients.length === 0) dispatch(fetchIngredients());
+    if (!isAuthChecked) dispatch(checkUserAuth());
   }, [dispatch]);
 
   return (
@@ -48,8 +54,8 @@ const App = () => {
         <Route
           path='/'
           element={
-            isLoading ? (
-              <Preloader />
+            isLoading || (ingredients.length === 0 && !error) ? ( // Пришлось сделать так, потому что из-за HMR отправляется 2 запроса и при обновлении было мерцание "Нет ингредиентов"
+              <Preloader key='ingredients-loader' />
             ) : error ? (
               <div
                 className={`${styles.error} text text_type_main-medium pt-4`}
@@ -62,7 +68,7 @@ const App = () => {
               <div
                 className={`${styles.title} text text_type_main-medium pt-4`}
               >
-                Нет игредиентов
+                Нет ингредиентов
               </div>
             )
           }

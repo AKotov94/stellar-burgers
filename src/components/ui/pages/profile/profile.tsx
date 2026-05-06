@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import { Button, Input } from '@zlden/react-developer-burger-ui-components';
-import styles from './profile.module.css';
 import commonStyles from '../common.module.css';
+import styles from './profile.module.css';
 
 import { ProfileUIProps } from './type';
 
@@ -56,6 +56,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
           errorText={''}
           size={'default'}
           icon={'EditIcon'}
+          autoComplete='new-password'
         />
       </div>
       {isFormChanged && (

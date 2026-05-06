@@ -35,7 +35,8 @@ const feedsSlice = createSlice({
       })
       .addCase(fetchFeeds.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.feeds = action.payload;
+        const { success, ...feedsData } = action.payload;
+        state.feeds = feedsData;
       })
       .addCase(fetchFeeds.rejected, (state, action) => {
         state.isLoading = false;
@@ -52,14 +53,14 @@ const feedsSlice = createSlice({
 export const { selectFeeds, selectFeedsIsLoading, selectFeedsError } =
   feedsSlice.selectors;
 
-export const selectOrders = createSelector(
+export const selectFeedsData = createSelector(
   [selectFeeds],
-  (feeds) => feeds?.orders ?? []
+  (data) => data?.orders ?? []
 );
 
-export const selectFeedStats = createSelector([selectFeeds], (slice) => ({
-  total: slice?.total,
-  totalToday: slice?.totalToday
+export const selectFeedsStats = createSelector([selectFeeds], (data) => ({
+  total: data?.total,
+  totalToday: data?.totalToday
 }));
 
 export default feedsSlice;
