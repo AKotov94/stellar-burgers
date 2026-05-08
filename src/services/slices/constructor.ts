@@ -1,15 +1,30 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { orderBurgerApi } from '@api';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+  PayloadAction
+} from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 
 interface ConstructorState {
   bun: TIngredient | null;
   ingredients: TConstructorIngredient[];
+  isCreating: boolean;
+  error: string | null;
 }
 
 const initialState: ConstructorState = {
   bun: null,
-  ingredients: []
+  ingredients: [],
+  isCreating: false,
+  error: null
 };
+
+export const createOrder = createAsyncThunk(
+  'constructor/create',
+  async (ingredients: string[]) => await orderBurgerApi(ingredients)
+);
 
 const constructorSlice = createSlice({
   name: 'burgerConstructor',
@@ -43,17 +58,47 @@ const constructorSlice = createSlice({
           state.ingredients[index]
         ];
       }
-    },
-    clearConstructor: () => ({ ...initialState })
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createOrder.pending, (state) => {
+        state.isCreating = true;
+        state.error = null;
+      })
+      .addCase(createOrder.fulfilled, (state) => {
+        state.bun = null;
+        state.ingredients = [];
+        state.isCreating = false;
+        state.error = null;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.isCreating = false;
+        state.error = action.error.message ?? 'Не удалось разместить заказ';
+      });
   },
   selectors: {
     selectConstructorIngredients: (state) => state.ingredients,
-    selectConstructorBun: (state) => state.bun
+    selectConstructorBun: (state) => state.bun,
+    selectConstructorIsCreating: (state) => state.isCreating,
+    selectConstructorError: (state) => state.error
   }
 });
 
-export const { selectConstructorIngredients, selectConstructorBun } =
-  constructorSlice.selectors;
+export const {
+  selectConstructorIngredients,
+  selectConstructorBun,
+  selectConstructorIsCreating,
+  selectConstructorError
+} = constructorSlice.selectors;
+
+export const selectConstructorItems = createSelector(
+  [selectConstructorBun, selectConstructorIngredients],
+  (bun, ingredients) => ({
+    bun,
+    ingredients
+  })
+);
 
 export const {
   addBun,

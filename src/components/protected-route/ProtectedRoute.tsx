@@ -1,4 +1,7 @@
-import { selectUser, selectUserisAuthChecked } from '@slices/user';
+import {
+  selectUserisAuthChecked,
+  selectUserIsAuthenticated
+} from '@slices/user';
 import { useSelector } from '@store';
 import { Preloader } from '@ui';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
@@ -9,7 +12,7 @@ type TProtectedRouteProps = {
 
 const ProtectedRoute = ({ onlyUnAuth = false }: TProtectedRouteProps) => {
   const location = useLocation();
-  const user = useSelector(selectUser);
+  const isAuthenticated = useSelector(selectUserIsAuthenticated);
   const isAuthChecked = useSelector(selectUserisAuthChecked);
 
   if (!isAuthChecked) {
@@ -17,14 +20,14 @@ const ProtectedRoute = ({ onlyUnAuth = false }: TProtectedRouteProps) => {
   }
 
   if (onlyUnAuth) {
-    if (user) {
+    if (isAuthenticated) {
       const from = location.state?.from?.pathname || '/';
       return <Navigate to={from} replace />;
     }
     return <Outlet />;
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Navigate to='/login' replace state={{ from: location }} />;
   }
 

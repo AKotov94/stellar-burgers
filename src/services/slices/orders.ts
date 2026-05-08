@@ -31,7 +31,7 @@ const ordersSlice = createSlice({
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload ?? [];
+        state.orders = action.payload;
       })
       .addCase(fetchOrders.rejected, (state, action) => {
         state.isLoading = false;
@@ -39,13 +39,13 @@ const ordersSlice = createSlice({
       });
   },
   selectors: {
-    selectOrders: (state) => state.orders,
+    selectOrders: (state) => state.orders ?? [],
     selectOrdersIsLoading: (state) => state.isLoading,
-    selectOredersError: (state) => state.error
+    selectOrdersError: (state) => state.error
   }
 });
 
-export const { selectOrders, selectOrdersIsLoading, selectOredersError } =
+export const { selectOrders, selectOrdersIsLoading, selectOrdersError } =
   ordersSlice.selectors;
 
 export default ordersSlice;

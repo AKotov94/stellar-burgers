@@ -178,7 +178,9 @@ const userSlice = createSlice({
     selectUserisAuthChecked: (state) => state.isAuthChecked,
     selectUser: (state) => state.user,
     selectUserIsLoading: (state) => state.isLoading,
-    selectUserError: (state) => state.error
+    selectUserError: (state) => state.error,
+    selectUserIsAuthenticated: (state) =>
+      state.isAuthChecked && state.user !== null
   }
 });
 
@@ -186,7 +188,8 @@ export const {
   selectUserisAuthChecked,
   selectUser,
   selectUserIsLoading,
-  selectUserError
+  selectUserError,
+  selectUserIsAuthenticated
 } = userSlice.selectors;
 
 export const selectUserData = createSelector(

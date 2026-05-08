@@ -1,3 +1,4 @@
+import { Modal, OrderInfo } from '@components';
 import {
   fetchOrders,
   selectOrders,
@@ -6,20 +7,38 @@ import {
 import { useDispatch, useSelector } from '@store';
 import { Preloader } from '@ui';
 import { ProfileOrdersUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const ProfileOrders: FC = () => {
   /** TODO: взять переменную из стора */
   const dispatch = useDispatch();
-  const orders: TOrder[] = useSelector(selectOrders);
+  const orders = useSelector(selectOrders);
   const isLoading = useSelector(selectOrdersIsLoading);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const isModalOpen = Boolean(id);
+
+  const handleClose = () => {
+    navigate('/profile/orders', { replace: true });
+  };
 
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
 
-  if (isLoading || orders === null) return <Preloader />;
+  if (isLoading) return <Preloader />;
 
-  return <ProfileOrdersUI orders={orders} />;
+  return (
+    <>
+      <ProfileOrdersUI orders={orders} />;
+      {isModalOpen && (
+        <Modal title='' onClose={handleClose}>
+          <OrderInfo />
+        </Modal>
+      )}
+    </>
+  );
 };

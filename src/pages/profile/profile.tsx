@@ -47,6 +47,8 @@ export const Profile: FC = () => {
     }
 
     dispatch(updateUser(payload));
+
+    setFormValue((prev) => ({ ...prev, password: '' }));
   };
 
   const handleCancel = (e: SyntheticEvent) => {

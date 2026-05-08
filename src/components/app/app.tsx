@@ -30,16 +30,13 @@ import { Route, Routes } from 'react-router-dom';
 import ProtectedRoute from '../protected-route/ProtectedRoute';
 
 const App = () => {
+  const dispatch = useDispatch();
+
   /** TODO: взять переменные из стора */
   const ingredients = useSelector(selectIngredients);
   const isAuthChecked = useSelector(selectUserisAuthChecked);
-
-  const ingredientsIsLoading = useSelector(selectIngredientsIsLoading);
-
-  const isLoading = ingredientsIsLoading;
+  const isLoading = useSelector(selectIngredientsIsLoading);
   const error = useSelector(selectIngredientsError);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (ingredients.length === 0) dispatch(fetchIngredients());
@@ -73,11 +70,14 @@ const App = () => {
             )
           }
         />
+        <Route path='/ingredients/:id' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
+        <Route path='/feed/:id' element={<Feed />} />
         <Route element={<ProtectedRoute />}>
           <Route path='/profile' element={<ProfileLayout />}>
             <Route index element={<Profile />} />
             <Route path='orders' element={<ProfileOrders />} />
+            <Route path='orders/:id' element={<ProfileOrders />} />
           </Route>
         </Route>
 
@@ -87,6 +87,7 @@ const App = () => {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
         </Route>
+
         <Route path='*' element={<NotFound404 />} />
       </Routes>
     </div>

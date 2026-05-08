@@ -2,20 +2,16 @@ import { FC, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { useSelector } from '@store';
+import { selectIngredients } from '@slices/ingredients';
+import { useParams } from 'react-router-dom';
+import { useOrderData } from 'src/hooks/useOrderData';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
-
-  const ingredients: TIngredient[] = [];
+  const { id } = useParams();
+  const { orderData } = useOrderData(id); // Тут тоже (как и с отправкой заказа) не понимаю, зачем хранить в глобальном стейте.
+  const ingredients: TIngredient[] = useSelector(selectIngredients);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
