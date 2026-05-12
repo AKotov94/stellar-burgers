@@ -14,10 +14,7 @@ const initialState: OrdersState = {
   error: null
 };
 
-export const fetchOrders = createAsyncThunk(
-  'orders/fetch',
-  async () => await getOrdersApi()
-);
+export const fetchOrders = createAsyncThunk('orders/fetch', getOrdersApi);
 
 const ordersSlice = createSlice({
   name: 'orders',

@@ -30,43 +30,29 @@ const initialState: UserState = {
   error: null
 };
 
-export const registerUser = createAsyncThunk(
-  'user/register',
-  async (data: TRegisterData) => await registerUserApi(data)
-);
+export const registerUser = createAsyncThunk('user/register', registerUserApi);
 
-export const loginUser = createAsyncThunk(
-  'user/login',
-  async (data: TLoginData) => await loginUserApi(data)
-);
+export const loginUser = createAsyncThunk('user/login', loginUserApi);
 
 export const forgotPassword = createAsyncThunk(
   'user/forgotPass',
-  async (data: { email: string }) => await forgotPasswordApi(data)
+  forgotPasswordApi
 );
 
 export const resetPassword = createAsyncThunk(
   'user/resetPass',
-  async (data: { password: string; token: string }) =>
-    await resetPasswordApi(data)
+  resetPasswordApi
 );
 
-export const updateUser = createAsyncThunk(
-  'user/update',
-  async (data: Partial<TRegisterData>) => updateUserApi(data)
-);
+export const updateUser = createAsyncThunk('user/update', updateUserApi);
 
-export const logOut = createAsyncThunk(
-  'user/logOut',
-  async () => await logoutApi()
-);
+export const logOut = createAsyncThunk('user/logOut', logoutApi);
 
 export const checkUserAuth = createAsyncThunk('user/checkAuth', async () => {
   const refreshToken = localStorage.getItem('refreshToken');
   if (!refreshToken) {
-    return Promise.reject('Нет refresh token');
+    throw new Error('Нет refresh token');
   }
-
   return await getUserApi();
 });
 

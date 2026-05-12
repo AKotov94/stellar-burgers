@@ -19,15 +19,17 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
         <div className={styles.menu_part_left}>
-          <Link
+          <NavLink
             to='/'
-            className={`${styles.link} ${isConstructorActive ? styles.link_active : ''}`}
+            className={({ isActive }) =>
+              `${styles.link} ${isActive ? styles.link_active : ''}`
+            }
           >
             <BurgerIcon type={'primary'} />
             <p className='text text_type_main-default ml-2 mr-10'>
               Конструктор
             </p>
-          </Link>
+          </NavLink>
           <NavLink
             to='/feed'
             className={({ isActive }) =>

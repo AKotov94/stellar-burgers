@@ -5,12 +5,14 @@ import { TIngredient } from '@utils-types';
 import { useSelector } from '@store';
 import { selectIngredients } from '@slices/ingredients';
 import { useParams } from 'react-router-dom';
-import { useOrderData } from 'src/hooks/useOrderData';
+import { selectOrders } from '@slices/orders';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const { id } = useParams();
-  const { orderData } = useOrderData(id); // Тут тоже (как и с отправкой заказа) не понимаю, зачем хранить в глобальном стейте.
+  const orderData = useSelector(selectOrders).find(
+    (order) => order.number === Number(id)
+  );
   const ingredients: TIngredient[] = useSelector(selectIngredients);
 
   /* Готовим данные для отображения */

@@ -14,7 +14,7 @@ import {
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader } from '@components';
+import { AppHeader, OrderInfo } from '@components';
 import { Preloader } from '@ui';
 
 import {
@@ -26,7 +26,7 @@ import {
 import { checkUserAuth, selectUserisAuthChecked } from '@slices/user';
 import { useDispatch, useSelector } from '@store';
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoute from '../protected-route/ProtectedRoute';
 
 const App = () => {
@@ -38,6 +38,9 @@ const App = () => {
   const isLoading = useSelector(selectIngredientsIsLoading);
   const error = useSelector(selectIngredientsError);
 
+  const location = useLocation();
+  const background = location.state?.background;
+
   useEffect(() => {
     if (ingredients.length === 0) dispatch(fetchIngredients());
     if (!isAuthChecked) dispatch(checkUserAuth());
@@ -47,7 +50,7 @@ const App = () => {
     <div className={styles.app}>
       <AppHeader />
 
-      <Routes>
+      <Routes location={background || location}>
         <Route
           path='/'
           element={
@@ -77,7 +80,7 @@ const App = () => {
           <Route path='/profile' element={<ProfileLayout />}>
             <Route index element={<Profile />} />
             <Route path='orders' element={<ProfileOrders />} />
-            <Route path='orders/:id' element={<ProfileOrders />} />
+            <Route path='orders/:id' element={<OrderInfo />} />
           </Route>
         </Route>
 
@@ -90,6 +93,12 @@ const App = () => {
 
         <Route path='*' element={<NotFound404 />} />
       </Routes>
+
+      {background && (
+        <Routes location={location}>
+
+        </Routes>
+      )}
     </div>
   );
 };
