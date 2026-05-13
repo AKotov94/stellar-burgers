@@ -2,6 +2,8 @@ import { getOrdersApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
+const EMPTY_ORDERS_ARRAY: TOrder[] = [];
+
 interface OrdersState {
   orders: TOrder[] | null;
   isLoading: boolean;
@@ -36,7 +38,7 @@ const ordersSlice = createSlice({
       });
   },
   selectors: {
-    selectOrders: (state) => state.orders ?? [],
+    selectOrders: (state) => state.orders ?? EMPTY_ORDERS_ARRAY,
     selectOrdersIsLoading: (state) => state.isLoading,
     selectOrdersError: (state) => state.error
   }

@@ -4,7 +4,9 @@ import {
   createSelector,
   createSlice
 } from '@reduxjs/toolkit';
-import { TOrdersData } from '@utils-types';
+import { TOrder, TOrdersData } from '@utils-types';
+
+const EMPTY_ORDERS_ARRAY: TOrder[] = [];
 
 interface FeedsState {
   feeds: TOrdersData | null;
@@ -52,7 +54,7 @@ export const { selectFeeds, selectFeedsIsLoading, selectFeedsError } =
 
 export const selectFeedsData = createSelector(
   [selectFeeds],
-  (data) => data?.orders ?? []
+  (data) => data?.orders ?? EMPTY_ORDERS_ARRAY
 );
 
 export const selectFeedsStats = createSelector([selectFeeds], (data) => ({
