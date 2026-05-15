@@ -26,6 +26,17 @@ export type TOrder = {
   ingredients: string[];
 };
 
+export type TOwner = {
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TNewOrder = TOrder & {
+  owner: TOwner;
+};
+
 export type TOrdersData = {
   orders: TOrder[];
   total: number;

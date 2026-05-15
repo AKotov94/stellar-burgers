@@ -6,3 +6,4 @@ export * from './profile';
 export * from './profile-orders';
 export * from './register';
 export * from './reset-password';
+export * from './profile-layout';

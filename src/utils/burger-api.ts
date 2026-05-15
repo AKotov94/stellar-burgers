@@ -1,5 +1,5 @@
 import { setCookie, getCookie } from './cookie';
-import { TIngredient, TOrder, TOrdersData, TUser } from './types';
+import { TIngredient, TOrder, TNewOrder, TUser } from './types';
 
 const URL = process.env.BURGER_API_URL;
 
@@ -99,23 +99,24 @@ export const getOrdersApi = () =>
     return Promise.reject(data);
   });
 
-type TOwner = {
-  name: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
-};
+// Перенесено в types.ts
+// type TOwner = {
+//   name: string;
+//   email: string;
+//   createdAt: string;
+//   updatedAt: string;
+// };
 
-type TNewOrder = {
-  _id: string;
-  status: string;
-  name: string;
-  owner: TOwner;
-  createdAt: string;
-  updatedAt: string;
-  number: number;
-  price: number;
-};
+// type TNewOrder = {
+//   _id: string;
+//   status: string;
+//   name: string;
+//   owner: TOwner;
+//   createdAt: string;
+//   updatedAt: string;
+//   number: number;
+//   price: number;
+// };
 
 type TNewOrderResponse = TServerResponse<{
   order: TNewOrder;
