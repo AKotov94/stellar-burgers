@@ -27,7 +27,7 @@
       "@selectors/*": ["./src/services/selectors/*"],
       "@store": ["./src/services/store"],
       "@cookie": ["./src/utils/cookie"]
-    },
+    }
   },
   "include": ["src", "src/types/**/*.d.ts"]
 }

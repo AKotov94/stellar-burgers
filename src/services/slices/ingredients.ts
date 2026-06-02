@@ -67,4 +67,5 @@ export const selectSauces = createSelector([selectIngredients], (items) =>
   items.filter((i) => i.type === 'sauce')
 );
 
+export { initialState };
 export default ingredientsSlice;

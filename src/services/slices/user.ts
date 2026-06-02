@@ -187,4 +187,5 @@ export const selectUserData = createSelector(
   })
 );
 
+export { initialState };
 export default userSlice;

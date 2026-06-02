@@ -47,4 +47,5 @@ const ordersSlice = createSlice({
 export const { selectOrders, selectOrdersIsLoading, selectOrdersError } =
   ordersSlice.selectors;
 
+export { initialState };
 export default ordersSlice;

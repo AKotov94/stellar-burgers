@@ -62,4 +62,5 @@ export const selectFeedsStats = createSelector([selectFeeds], (data) => ({
   totalToday: data?.totalToday
 }));
 
+export { initialState };
 export default feedsSlice;

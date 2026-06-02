@@ -108,4 +108,5 @@ export const {
   moveIngredientDown
 } = constructorSlice.actions;
 
+export { initialState };
 export default constructorSlice;
