@@ -8,11 +8,10 @@ jest.mock('@api', () => {
   };
 });
 
-import { fetchIngredients } from '@slices/ingredients';
-import store, { rootReducer } from '@store';
-import { TIngredient } from '@utils-types';
 import * as api from '@api';
-import { configureStore } from '@reduxjs/toolkit';
+import { fetchIngredients, resetIngredients } from '@slices/ingredients';
+import store from '@store';
+import { TIngredient } from '@utils-types';
 
 const mockIngredients: TIngredient[] = [
   {
@@ -70,31 +69,40 @@ const mockIngredients: TIngredient[] = [
 ];
 
 describe('Редюсер ingredients', () => {
-  beforeEach(() => {
-    store.replaceReducer(rootReducer);
-  });
   afterEach(() => {
     jest.clearAllMocks();
+    store.dispatch(resetIngredients());
   });
 
-  // test('pending: isLoading значение true, error значение сбрасывается', async () => {
-  //   const getIngredientsSpy = jest.spyOn(
-  //     api,
-  //     'getIngredientsApi'
-  //   ) as jest.MockedFunction<any>;
-  //   const hangingPromise = new Promise<TIngredient[]>(() => {});
-  //   getIngredientsSpy.mockReturnValue(hangingPromise);
+  test('pending: isLoading значение true, error значение сбрасывается', async () => {
+    store.dispatch(
+      fetchIngredients.rejected(
+        new Error('Ошибка предыдещео запроса'),
+        'fake-request-id'
+      )
+    );
+    expect(store.getState().ingredients.error).toBe(
+      'Ошибка предыдещео запроса'
+    );
+    expect(store.getState().ingredients.isLoading).toBe(false);
 
-  //   const pendingActionPromise = store.dispatch(fetchIngredients());
-  //   const state = store.getState().ingredients;
+    const getIngredientsSpy = jest.spyOn(
+      api,
+      'getIngredientsApi'
+    ) as jest.MockedFunction<any>;
+    const hangingPromise = new Promise<TIngredient[]>(() => {});
+    getIngredientsSpy.mockReturnValue(hangingPromise);
 
-  //   expect(state.isLoading).toBe(true);
-  //   expect(state.error).toBeNull();
-  //   expect(state.ingredients).toEqual([]);
+    const pendingActionPromise = store.dispatch(fetchIngredients());
+    const state = store.getState().ingredients;
 
-  //   expect(getIngredientsSpy).toHaveBeenCalledTimes(1);
-  //   pendingActionPromise.catch(() => {});
-  // });
+    expect(state.isLoading).toBe(true);
+    expect(state.error).toBeNull();
+    expect(state.ingredients).toEqual([]);
+
+    expect(getIngredientsSpy).toHaveBeenCalledTimes(1);
+    pendingActionPromise.catch(() => {});
+  });
 
   test('fulfilled: ingredints записывает данные, isLoading значеение false', async () => {
     const getIngredientsSpy = jest

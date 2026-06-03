@@ -25,7 +25,7 @@ export const fetchFeeds = createAsyncThunk('feeds/fetch', getFeedsApi);
 const feedsSlice = createSlice({
   name: 'feeds',
   initialState,
-  reducers: {},
+  reducers: { resetFeeds: () => initialState },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFeeds.pending, (state) => {
@@ -62,5 +62,6 @@ export const selectFeedsStats = createSelector([selectFeeds], (data) => ({
   totalToday: data?.totalToday
 }));
 
+export const { resetFeeds } = feedsSlice.actions;
 export { initialState };
 export default feedsSlice;

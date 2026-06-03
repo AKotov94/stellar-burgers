@@ -5,8 +5,6 @@ import {
   logoutApi,
   registerUserApi,
   resetPasswordApi,
-  TLoginData,
-  TRegisterData,
   updateUserApi
 } from '@api';
 import {
@@ -59,7 +57,7 @@ export const checkUserAuth = createAsyncThunk('user/checkAuth', async () => {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: { resetUser: () => initialState },
   extraReducers: (builder) => {
     builder
       //# registerUser
@@ -187,5 +185,6 @@ export const selectUserData = createSelector(
   })
 );
 
+export const { resetUser } = userSlice.actions;
 export { initialState };
 export default userSlice;

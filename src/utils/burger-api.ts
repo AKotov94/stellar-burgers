@@ -1,5 +1,5 @@
-import { setCookie, getCookie } from './cookie';
-import { TIngredient, TOrder, TNewOrder, TUser } from './types';
+import { getCookie, setCookie } from './cookie';
+import { TIngredient, TNewOrder, TOrder, TUser } from './types';
 
 const URL = process.env.BURGER_API_URL;
 
@@ -65,10 +65,6 @@ type TFeedsResponse = TServerResponse<{
   orders: TOrder[];
   total: number;
   totalToday: number;
-}>;
-
-type TOrdersResponse = TServerResponse<{
-  data: TOrder[];
 }>;
 
 export const getIngredientsApi = () =>
@@ -252,7 +248,3 @@ export const logoutApi = () =>
       token: localStorage.getItem('refreshToken')
     })
   }).then((res) => checkResponse<TServerResponse<{}>>(res));
-
-// export const api = {
-//   getIngredientsApi
-// };
