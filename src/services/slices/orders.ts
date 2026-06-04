@@ -21,7 +21,7 @@ export const fetchOrders = createAsyncThunk('orders/fetch', getOrdersApi);
 const ordersSlice = createSlice({
   name: 'orders',
   initialState,
-  reducers: {},
+  reducers: { resetOrders: () => initialState },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOrders.pending, (state) => {
@@ -47,4 +47,6 @@ const ordersSlice = createSlice({
 export const { selectOrders, selectOrdersIsLoading, selectOrdersError } =
   ordersSlice.selectors;
 
+export const { resetOrders } = ordersSlice.actions;
+export { initialState };
 export default ordersSlice;

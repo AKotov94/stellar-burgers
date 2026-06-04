@@ -1,10 +1,10 @@
+import { getIngredientsApi } from '@api';
 import {
-  createSlice,
   createAsyncThunk,
-  createSelector
+  createSelector,
+  createSlice
 } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
-import { getIngredientsApi } from '@api';
 
 interface IngredientsState {
   ingredients: TIngredient[];
@@ -26,7 +26,9 @@ export const fetchIngredients = createAsyncThunk(
 const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
-  reducers: {},
+  reducers: {
+    resetIngredients: () => initialState
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredients.pending, (state) => {
@@ -67,4 +69,6 @@ export const selectSauces = createSelector([selectIngredients], (items) =>
   items.filter((i) => i.type === 'sauce')
 );
 
+export const { resetIngredients } = ingredientsSlice.actions;
+export { initialState };
 export default ingredientsSlice;
