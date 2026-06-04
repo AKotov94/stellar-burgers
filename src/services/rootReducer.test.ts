@@ -1,26 +1,22 @@
+import constructorSlice from '@slices/constructor';
+import feedsSlice from '@slices/feeds';
+import ingredientsSlice from '@slices/ingredients';
+import ordersSlice from '@slices/orders';
+import userSlice from '@slices/user';
 import { rootReducer } from '@store';
-import { initialState as ingredientsInitial } from '@slices/ingredients';
-import { initialState as constructorInitial } from '@slices/constructor';
-import { initialState as feedsInitial } from '@slices/feeds';
-import { initialState as userInitial } from '@slices/user';
-import { initialState as ordersInitial } from '@slices/orders';
 
 describe('Проверка инциализации rootReducer', () => {
   test('Возвращае корректное начальное состояние при undefined и неизвестном экшене', () => {
-    const initialState = rootReducer(undefined, { type: 'UNKNOWN_ACTION' });
+    const initAction = { type: 'UNKNOWN_ACTION' };
 
-    expect(initialState).toBeDefined();
+    const state = rootReducer(undefined, initAction);
 
-    expect(initialState).toHaveProperty('ingredients');
-    expect(initialState).toHaveProperty('constructor');
-    expect(initialState).toHaveProperty('feeds');
-    expect(initialState).toHaveProperty('user');
-    expect(initialState).toHaveProperty('orders');
-
-    expect(initialState.ingredients).toEqual(ingredientsInitial);
-    expect(initialState.burgerConstructor).toEqual(constructorInitial);
-    expect(initialState.feeds).toEqual(feedsInitial);
-    expect(initialState.user).toEqual(userInitial);
-    expect(initialState.orders).toEqual(ordersInitial);
+    expect(state).toEqual({
+      ingredients: ingredientsSlice.reducer(undefined, initAction),
+      burgerConstructor: constructorSlice.reducer(undefined, initAction),
+      feeds: feedsSlice.reducer(undefined, initAction),
+      user: userSlice.reducer(undefined, initAction),
+      orders: ordersSlice.reducer(undefined, initAction)
+    });
   });
 });
